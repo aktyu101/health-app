@@ -18,6 +18,7 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   padding: 0 20px;
   position: sticky;
+  box-sizing: border-box;
 `;
 const HeaderTitle = styled.h1`
   color: #fff;
