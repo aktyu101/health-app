@@ -8,7 +8,10 @@ const reset = css`
   h1,
   div,
   section,
-  header {
+  header,
+  ul,
+  ol,
+  dl {
     margin: 0;
     padding: 0;
   }

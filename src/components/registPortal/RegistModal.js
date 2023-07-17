@@ -19,6 +19,8 @@ export default function RegistModal({ children, onRegist, onCancel }) {
         y: "-50%",
       }}
     >
+      <CloseBtn onClick={onCancel}>x</CloseBtn>
+
       <ModalContent>{children}</ModalContent>
       <ModalAction>
         <Button bgColor="#eee" onClick={onRegist}>
@@ -28,8 +30,6 @@ export default function RegistModal({ children, onRegist, onCancel }) {
           취소
         </Button>
       </ModalAction>
-
-      <CloseBtn>x</CloseBtn>
     </PopupContainer>,
     document.querySelector("#modal")
   );
@@ -50,9 +50,9 @@ const PopupContainer = styled(motion.div)`
   flex-direction: column;
 `;
 const CloseBtn = styled.button`
-  position: absolute;
-  right: 10px;
-  top: 10px;
+  margin-bottom: 10px;
+  width: 20px;
+  align-self: flex-end;
 `;
 const ModalContent = styled.div`
   flex-grow: 1;

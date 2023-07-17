@@ -72,17 +72,29 @@ export default function Contents() {
         {routines.map((routine) => {
           return (
             <RoutineListItem key={routine.id}>
-              <span>루틴 목록1</span>
-              <SectionListItemAction>
-                <Button type="text">운동 등록</Button>
-                <Button type="text">운동 삭제</Button>
-                <Button type="text">운동 시작</Button>
-              </SectionListItemAction>
-              <ul>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "baseline",
+                  justifyContent: "space-between",
+                  marginBottom: "10px",
+                }}
+              >
+                <span>{routine.title}</span>
+                <SectionListItemAction>
+                  <Button type="text">운동 등록</Button>
+                  <Button type="text">운동 삭제</Button>
+                  <Button type="text">운동 시작</Button>
+                </SectionListItemAction>
+              </div>
+
+              <WrapTwoDepthList>
                 {routine.item.map((item) => {
-                  return <li key={item.id}>{item.title}</li>;
+                  return (
+                    <TwoDepthList key={item.id}>{item.title}</TwoDepthList>
+                  );
                 })}
-              </ul>
+              </WrapTwoDepthList>
             </RoutineListItem>
           );
         })}
@@ -130,7 +142,8 @@ const RoutineListItem = styled.li`
   padding: 20px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  display; flex;
+  flex-direction: column;
 `;
 const SectionListItemAction = styled.div``;
 const StyledInput = styled.input`
@@ -139,5 +152,11 @@ const StyledInput = styled.input`
   outline: none;
   height: 30px;
   border: solid 1px #ddd;
+`;
+const WrapTwoDepthList = styled.ul`
+  border-top: solid 1px #fff;
+`;
+const TwoDepthList = styled.li`
+  line-height: 40px;
 `;
 //팝업 > 제목 입력하여 리스트 추가
