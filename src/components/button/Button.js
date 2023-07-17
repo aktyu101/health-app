@@ -1,15 +1,30 @@
 import styled from "@emotion/styled";
 import hexToRgba from "hex-to-rgba";
 
-export default function Button({ type = "fill", children }) {
-  return <StyledButton type={type}>{children}</StyledButton>;
+export default function Button({
+  type = "fill",
+  children,
+  onClick,
+  bgColor = "#fff",
+  textColor = "#fff",
+}) {
+  return (
+    <StyledButton
+      type={type}
+      bgColor={bgColor}
+      textColor={textColor}
+      onClick={onClick}
+    >
+      {children}
+    </StyledButton>
+  );
 }
 
 const StyledButton = styled.button`
   height: 36px;
-  ${({ type }) => `
-    background-color: ${type === "text" ? "transparent" : "#fff"};
-    color: ${type === "text" ? "#eee" : "rgb(10, 25, 41)"};
+  ${({ type, bgColor, textColor }) => `
+    background-color: ${type === "text" ? "transparent" : bgColor};
+    color: ${type === "text" ? textColor : "#000"};
     &:hover {
         background-color: ${
           type === "text" ? `${hexToRgba("#fff", "0.2")}` : "#333"
