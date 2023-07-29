@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import Header from "./components/app/Header";
-import Contents from "./components/Contents";
+import Contents from "./components/app/Contents";
 import { Global } from "@emotion/react";
 
 const reset = css`

@@ -1,43 +1,87 @@
 import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import Button from "./button/Button";
-import RegistModal from "./registPortal/RegistModal";
+import Button from "../button/Button";
+import RegistModal from "../registPortal/RegistModal";
+import { formatTime } from "../utills/formatTime";
+import RoutineCountDown from "./RoutineCountDown";
 
 const currentRoutine =
   JSON.parse(window.localStorage.getItem("routines")) ?? [];
 export default function Contents() {
   const [registRoutine, setRegistRoutine] = useState("");
+  const [registRoutineItem, setRegistRoutineItem] = useState({
+    name: "",
+    playTime: 0,
+  });
   const [modalOpen, setModalOpen] = useState(false);
+  const [openRegistId, setOpenRegistId] = useState(null);
+  const [modalType, setModalType] = useState("group");
   const [routines, setRoutines] = useState(currentRoutine);
 
   const handleOpenRegistRoutine = () => {
     setModalOpen(true);
+    setModalType("group");
+  };
+  const handleOpenRegistRoutineItem = (id) => {
+    setModalOpen(true);
+    setModalType("item");
+    setOpenRegistId(id);
   };
   const handleCancleRegistRoutine = () => {
     setModalOpen(false);
   };
+  //list
+
   const handleRegistRoutine = () => {
-    console.log("regist");
-    setRoutines((routines) => [
-      ...routines,
-      {
-        id: routines.length + 1,
-        title: registRoutine,
-        item: [
-          {
-            id: 1,
-            title: "스쿼트",
-          },
-          { id: 2, title: "걷기" },
-        ],
-      },
-    ]);
-    setRegistRoutine("");
+    if (modalType === "group") {
+      console.log("regist");
+      setRoutines((routines) => [
+        ...routines,
+        {
+          id: routines.length + 1,
+          title: registRoutine,
+          items: [],
+        },
+      ]);
+      setRegistRoutine("");
+    } else {
+      setRoutines((routines) =>
+        routines.map((routine) => {
+          return openRegistId === routine.id
+            ? {
+                ...routine,
+                items: [
+                  ...routine.items,
+                  {
+                    id: routine.items.length + 1,
+                    title: registRoutineItem.name,
+                    playTime: registRoutineItem.playTime,
+                  },
+                ],
+              }
+            : routine;
+        })
+      );
+    }
     setModalOpen(false);
     //초기화 > close
   };
+
   const handleChangeRoutineInput = (event) => {
     setRegistRoutine(event.target.value);
+  };
+  const handleChangeRoutineItemInput = (event) => {
+    setRegistRoutineItem((item) => ({
+      ...item,
+      name: event.target.value,
+    }));
+  };
+  const handleChangeRoutineItemPlayTime = (event) => {
+    setRegistRoutineItem((item) => ({
+      ...item,
+      playTime: event.target.value,
+    }));
+    //객체 상태변경
   };
 
   useEffect(() => {
@@ -55,11 +99,29 @@ export default function Contents() {
           onRegist={handleRegistRoutine}
           onCancel={handleCancleRegistRoutine}
         >
-          <StyledInput
-            type="text"
-            value={registRoutine}
-            onChange={handleChangeRoutineInput}
-          />
+          {modalType === "group" ? (
+            <StyledInput
+              type="text"
+              value={registRoutine}
+              onChange={handleChangeRoutineInput}
+            />
+          ) : (
+            <div
+              style={{ display: "flex", plexDirection: "column", gap: "5px" }}
+            >
+              <StyledInput
+                placeholder="운동 이름을 입력해주세요"
+                type="text"
+                value={registRoutineItem.name}
+                onChange={handleChangeRoutineItemInput}
+              />
+              <StyledInput
+                type="text"
+                value={registRoutineItem.playTime}
+                onChange={handleChangeRoutineItemPlayTime}
+              />
+            </div>
+          )}
         </RegistModal>
       )}
       {/* {modalOpen && (
@@ -80,18 +142,34 @@ export default function Contents() {
                   marginBottom: "10px",
                 }}
               >
-                <span>{routine.title}</span>
+                <span>
+                  {routine.title} (
+                  <RoutineCountDown
+                    seconds={routine.items.reduce(
+                      (a, b) => a + Number(b.playTime ?? 0),
+                      0
+                    )}
+                  />
+                  )
+                </span>
                 <SectionListItemAction>
-                  <Button type="text">운동 등록</Button>
+                  <Button
+                    type="text"
+                    onClick={() => handleOpenRegistRoutineItem(routine.id)}
+                  >
+                    운동 등록
+                  </Button>
                   <Button type="text">운동 삭제</Button>
                   <Button type="text">운동 시작</Button>
                 </SectionListItemAction>
               </div>
 
               <WrapTwoDepthList>
-                {routine.item.map((item) => {
+                {routine.items.map((item) => {
                   return (
-                    <TwoDepthList key={item.id}>{item.title}</TwoDepthList>
+                    <TwoDepthList key={item.id}>
+                      {item.title}({formatTime(item.playTime ?? 0)} )
+                    </TwoDepthList>
                   );
                 })}
               </WrapTwoDepthList>
@@ -160,3 +238,5 @@ const TwoDepthList = styled.li`
   line-height: 40px;
 `;
 //팝업 > 제목 입력하여 리스트 추가
+
+//체크박스

@@ -37,7 +37,7 @@ export default function RegistModal({ children, onRegist, onCancel }) {
 
 const PopupContainer = styled(motion.div)`
   width: 800px;
-  height: 600px;
+  height: auto;
   background-color: #fff;
   position: absolute;
   top: 50%;
