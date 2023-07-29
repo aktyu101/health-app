@@ -238,5 +238,3 @@ const TwoDepthList = styled.li`
   line-height: 40px;
 `;
 //팝업 > 제목 입력하여 리스트 추가
-
-//체크박스
