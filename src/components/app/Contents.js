@@ -4,6 +4,9 @@ import Button from "../button/Button";
 import RegistModal from "../registPortal/RegistModal";
 import { formatTime } from "../utills/formatTime";
 import RoutineCountDown from "./RoutineCountDown";
+import RoutineListItemHeader from "./RoutineListItemHeader";
+import RoutineItem from "./RoutineItem";
+import RoutineChildItem from "./RoutineChildItem";
 
 const currentRoutine =
   JSON.parse(window.localStorage.getItem("routines")) ?? [];
@@ -29,6 +32,10 @@ export default function Contents() {
   };
   const handleCancleRegistRoutine = () => {
     setModalOpen(false);
+  };
+  const handleDeleteRoutine = (id) => {
+    console.log("deleteId", id);
+    setRoutines((routines) => routines.filter((routine) => routine.id !== id));
   };
   //list
 
@@ -133,47 +140,25 @@ export default function Contents() {
       <RoutineList>
         {routines.map((routine) => {
           return (
-            <RoutineListItem key={routine.id}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "baseline",
-                  justifyContent: "space-between",
-                  marginBottom: "10px",
-                }}
-              >
-                <span>
-                  {routine.title} (
-                  <RoutineCountDown
-                    seconds={routine.items.reduce(
-                      (a, b) => a + Number(b.playTime ?? 0),
-                      0
-                    )}
-                  />
-                  )
-                </span>
-                <SectionListItemAction>
-                  <Button
-                    type="text"
-                    onClick={() => handleOpenRegistRoutineItem(routine.id)}
-                  >
-                    운동 등록
-                  </Button>
-                  <Button type="text">운동 삭제</Button>
-                  <Button type="text">운동 시작</Button>
-                </SectionListItemAction>
-              </div>
+            <RoutineItem key={routine.id} routine={routine}>
+              <RoutineListItemHeader
+                routine={routine}
+                onRegist={handleOpenRegistRoutineItem}
+                onDelete={handleDeleteRoutine}
+              ></RoutineListItemHeader>
 
               <WrapTwoDepthList>
                 {routine.items.map((item) => {
                   return (
-                    <TwoDepthList key={item.id}>
-                      {item.title}({formatTime(item.playTime ?? 0)} )
-                    </TwoDepthList>
+                    <RoutineChildItem
+                      key={item.id}
+                      title={item.title}
+                      playTime={item.playTime}
+                    ></RoutineChildItem>
                   );
                 })}
               </WrapTwoDepthList>
-            </RoutineListItem>
+            </RoutineItem>
           );
         })}
       </RoutineList>
@@ -213,15 +198,6 @@ const RoutineList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 5px;
-`;
-const RoutineListItem = styled.li`
-  border-radius: 5px;
-  border: solid 1px #eee;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  display; flex;
-  flex-direction: column;
 `;
 const SectionListItemAction = styled.div``;
 const StyledInput = styled.input`
