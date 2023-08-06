@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import Button from "../button/Button";
 import RegistModal from "../registPortal/RegistModal";
-import { formatTime } from "../utills/formatTime";
-import RoutineCountDown from "./RoutineCountDown";
 import RoutineListItemHeader from "./RoutineListItemHeader";
 import RoutineItem from "./RoutineItem";
 import RoutineChildItem from "./RoutineChildItem";
