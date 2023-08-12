@@ -140,7 +140,6 @@ export default function Contents() {
           return (
             <RoutineItem key={routine.id} routine={routine}>
               <RoutineListItemHeader
-                routine={routine}
                 onRegist={handleOpenRegistRoutineItem}
                 onDelete={handleDeleteRoutine}
               ></RoutineListItemHeader>
@@ -150,8 +149,7 @@ export default function Contents() {
                   return (
                     <RoutineChildItem
                       key={item.id}
-                      title={item.title}
-                      playTime={item.playTime}
+                      item={item}
                     ></RoutineChildItem>
                   );
                 })}

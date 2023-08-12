@@ -1,24 +1,21 @@
 import styled from "@emotion/styled";
 import { createContext } from "react";
-import { useMemo } from "react";
 import { useCountDown } from "../../hooks/useCountDown";
 
 export const RoutineItemContext = createContext(null);
-
 export default function RoutineItem({ children, routine }) {
-  const totalPlayTime = useMemo(
-    () => routine.items.reduce((a, b) => a + Number(b.playTime ?? 0), 0),
-    [routine.items]
+  const { play, pause, currentCount, isPlaying, routineItems } = useCountDown(
+    routine.items
   );
-  const { play, pause, currentCount, isPlaying } = useCountDown(totalPlayTime);
   return (
     <RoutineItemContext.Provider
-      value={{ routine, play, pause, currentCount, isPlaying }}
+      value={{ routine, play, pause, currentCount, isPlaying, routineItems }}
     >
       <RoutineListItem>{children}</RoutineListItem>;
     </RoutineItemContext.Provider>
   );
 }
+
 const RoutineListItem = styled.li`
   border-radius: 5px;
   border: solid 1px #eee;

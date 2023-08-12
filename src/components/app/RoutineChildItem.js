@@ -1,13 +1,19 @@
 import styled from "@emotion/styled";
-import { formatTime } from "../utills/formatTime";
+import { useContext, useMemo } from "react";
 import { RoutineItemContext } from "./RoutineItem";
-import { useContext } from "react";
+import { formatTime } from "../utills/formatTime";
 
-export default function RoutineChildItem({ title, playTime }) {
-  const { currentCount } = useContext(RoutineItemContext);
+export default function RoutineChildItem({ item }) {
+  const { routineItems } = useContext(RoutineItemContext);
+  const currentTime = useMemo(() => {
+    return formatTime(
+      routineItems.find((routine) => routine.id === item.id)?.playTime ?? 0
+    );
+  }, [routineItems, item.id]);
+
   return (
     <TwoDepthList>
-      {title}({formatTime(playTime ?? 0)} )
+      {item.title}({currentTime} )
     </TwoDepthList>
   );
 }

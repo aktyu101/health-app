@@ -4,8 +4,8 @@ import RoutineCountDown from "./RoutineCountDown";
 import { useContext } from "react";
 import { RoutineItemContext } from "./RoutineItem";
 
-export default function RoutineListItemHeader({ routine, onRegist, onDelete }) {
-  const { isPlaying, currentCount, pause, play } =
+export default function RoutineListItemHeader({ onRegist, onDelete }) {
+  const { isPlaying, currentCount, pause, play, routine } =
     useContext(RoutineItemContext);
   const handleDelet = (id) => {
     if (isPlaying) {
@@ -50,3 +50,4 @@ const StyledHeader = styled.div`
   alig-itmes: center;
 `;
 const SectionListItemAction = styled.div``;
+//usecontext
