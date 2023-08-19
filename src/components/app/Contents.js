@@ -50,6 +50,7 @@ export default function Contents() {
       ]);
       setRegistRoutine("");
     } else {
+      console.log("registruoutineitem", registRoutineItem);
       setRoutines((routines) =>
         routines.map((routine) => {
           return openRegistId === routine.id

@@ -11,7 +11,7 @@ export default function RoutineItem({ children, routine }) {
     <RoutineItemContext.Provider
       value={{ routine, play, pause, currentCount, isPlaying, routineItems }}
     >
-      <RoutineListItem>{children}</RoutineListItem>;
+      <RoutineListItem>{children}</RoutineListItem>
     </RoutineItemContext.Provider>
   );
 }
